@@ -1,6 +1,16 @@
-FROM python:2-alpine
+FROM python:alpine
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN apk --update add uwsgi
+RUN pip install pipenv
 
+COPY Pipfile* /
+RUN pipenv install --system --deploy
 
+RUN mkdir --p app/app
+
+COPY bunnies.ini /app
+COPY app/* app/app/
+
+WORKDIR app
+
+CMD ["uwsgi", "--ini", "bunnies.ini"]

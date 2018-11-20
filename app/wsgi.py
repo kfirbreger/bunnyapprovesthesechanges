@@ -2,4 +2,4 @@ import sys
 import os
 
 
-from bunny import app as application
+from bunny import application as app

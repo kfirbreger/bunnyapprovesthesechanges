@@ -1,24 +1,26 @@
-FROM python:alpine
+FROM alpine
 
 EXPOSE 8000
 
-RUN apk --update add uwsgi
+RUN apk --update add uwsgi \
+                    uwsgi-python3 \
+                    python3
 
 # Create a group and user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-RUN pip install pipenv
+RUN pip3 install pipenv
 
 COPY Pipfile* /
-RUN pipenv install --system --deploy
+RUN pipenv install --three --system --deploy
 
 RUN mkdir --p app/app
 
 WORKDIR app
 USER appuser
 
+COPY app/* /app/app/
 COPY bunnies.ini /app
-COPY app/* app/app/
 
 
 CMD ["uwsgi", "--ini", "bunnies.ini"]

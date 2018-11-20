@@ -1,6 +1,6 @@
 # Core
 from random import choice
-import HTMLParser
+import html.parser
 # Libs
 from werkzeug.wrappers import Request, Response
 from werkzeug.routing import Map, Rule
@@ -55,7 +55,7 @@ class Bunny(object):
         try:
             endpoint, values = adapter.match()
             return getattr(self, 'on_' + endpoint)(request, **values)
-        except HTTPException, e:
+        except HTTPException as e:
             return e
 
     def wsgi_app(self, environ, start_response):
@@ -164,9 +164,9 @@ class Bunny(object):
         if format == 'html':
             glue = "<br />"
         # Joining the bunny
-        bunny = unicode(glue.join([header, bun, footer]))
+        bunny = glue.join([header, bun, footer])
         if format != 'html':
-            h = HTMLParser.HTMLParser()
+            h = html.parser.HTMLParser()
             bunny = h.unescape(bunny)
         return bunny
 

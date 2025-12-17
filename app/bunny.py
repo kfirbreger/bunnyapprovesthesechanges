@@ -151,7 +151,7 @@ class Bunny(object):
         Format is the format the bunny is in
         specials is a list. The first value is header, the second footer
         """
-        header = '(\ /)'
+        header = '(\\ /)'
         footer = '(> <)'
         glue = "\n"
         if format == 'html':
